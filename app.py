@@ -7,7 +7,7 @@ from langchain_community.vectorstores import faiss
 from langchain_community.llms import ctransformers
 from langchain.chains import ConversationalRetrievalChain
 
-DB_FAISS_PATH = "vectorstore/db_faiss"
+DB_FAISS_PATH = "sample/vectorstore/db_faiss"
 
 def load_llm():
     llm = ctransformers(
@@ -20,3 +20,22 @@ def load_llm():
 
 st.title("Chat with CSV")
 st.markdown("<h3 style='text-align: center; color: white;'> TEST </h3>", unsafe_allow_html=True)
+
+uploaded_file = st.sidebar._file_uploader("Upload you data here", type="csv")
+
+if uploaded_file:
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        tmp_file.write(uploaded_file.getvalue())
+        tmp_file_path = tmp_file.name
+    loader = CSVLoader(file_path=tmp_file_path, encoding="utf-8", csv_args={
+        'delimiter': ','
+    })
+    data = loader.load()
+    st.json(data)
+    embeddings = HuggingFaceEmbeddings(
+        model_name = 'sentence-transformers/all-MiniLM-L6-v2'
+
+    )
+
+    db = faiss.from_documents(data, embeddings)
+    db.save_local(DB_FAISS_PATH)
