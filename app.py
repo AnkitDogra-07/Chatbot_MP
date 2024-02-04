@@ -10,4 +10,13 @@ from langchain.chains import ConversationalRetrievalChain
 DB_FAISS_PATH = "vectorstore/db_faiss"
 
 def load_llm():
-    
+    llm = ctransformers(
+        model = "llama-2-7b-chat.ggmlv3.q8_0.bin",
+        model_type = "llama",
+        max_new_tokens = 512,
+        temperature = 0.5
+    )
+    return llm
+
+st.title("Chat with CSV")
+st.markdown("<h3 style='text-align: center; color: white;'> TEST </h3>", unsafe_allow_html=True)
