@@ -1,2 +1,7 @@
 sample/
+<<<<<<< HEAD
 *.bin filter=lfs diff=lfs merge=lfs -text
+=======
+*.bin filter=lfs diff=lfs merge=lfs -text
+llama-2-7b-chat.ggmlv3.q8_0.bin
+>>>>>>> 7e92e3baa770e875f59bf57705ab2d13cf9557d8
